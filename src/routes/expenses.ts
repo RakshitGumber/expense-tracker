@@ -19,7 +19,7 @@ export const expensesRoute = new Hono()
     return c.json({ total: 1212 });
   })
   .get("/", (c) => {
-    return c.json({ expenses: [] });
+    return c.json({ expenses: [{ id: 1, amount: 100, title: "test" }] });
   })
   .post("/", zValidator("json", createPostSchema), async (c) => {
     const data = c.req.valid("json");
