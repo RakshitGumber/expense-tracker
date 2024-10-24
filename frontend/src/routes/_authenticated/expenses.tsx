@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import api from "../lib/api";
+import api from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 import {
   Table,
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const Route = createFileRoute("/expenses")({
+export const Route = createFileRoute("/_authenticated/expenses")({
   component: Expenses,
 });
 
