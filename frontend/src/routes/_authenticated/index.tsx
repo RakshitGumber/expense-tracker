@@ -35,7 +35,7 @@ function App() {
         <CardDescription>The total amount you've spent.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>{data?.total}</p>
+        <p>{data}</p>
       </CardContent>
     </Card>
   );

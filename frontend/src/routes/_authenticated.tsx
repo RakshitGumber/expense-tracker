@@ -23,6 +23,7 @@ export const Route = createFileRoute("/_authenticated")({
     const queryClient = context.queryClient;
     try {
       const data = queryClient.fetchQuery(userQueryOptions);
+
       return data;
     } catch (error) {
       return { user: null };

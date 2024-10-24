@@ -1,43 +1,43 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { useForm } from '@tanstack/react-form'
-import type { FieldApi } from '@tanstack/react-form'
-import api from '@/lib/api'
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { useForm } from "@tanstack/react-form";
+import type { FieldApi } from "@tanstack/react-form";
+import api from "@/lib/api";
 
-export const Route = createFileRoute('/_authenticated/create-expense')({
+export const Route = createFileRoute("/_authenticated/create-expense")({
   component: CreateExpense,
-})
+});
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
     <>
       {field.state.meta.isTouched && field.state.meta.errors.length ? (
-        <em>{field.state.meta.errors.join(', ')}</em>
+        <em>{field.state.meta.errors.join(", ")}</em>
       ) : null}
-      {field.state.meta.isValidating ? 'Validating...' : null}
+      {field.state.meta.isValidating ? "Validating..." : null}
     </>
-  )
+  );
 }
 
 function CreateExpense() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: {
-      title: '',
-      amount: 0,
+      title: "",
+      amount: "",
     },
     onSubmit: async ({ value }) => {
-      const res = await api.expenses.$post({ json: value })
+      const res = await api.expenses.$post({ json: value });
       if (!res.ok) {
-        throw new Error('Something went wrong')
+        throw new Error("Something went wrong");
       }
 
-      navigate({ to: '/expenses' })
+      navigate({ to: "/expenses" });
     },
-  })
+  });
 
   return (
     <div className="p-2">
@@ -45,9 +45,9 @@ function CreateExpense() {
       <form
         className="max-w-[350px] mx-auto flex flex-col gap-4"
         onSubmit={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          form.handleSubmit()
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
         }}
       >
         <div>
@@ -57,23 +57,23 @@ function CreateExpense() {
             validators={{
               onChange: ({ value }) =>
                 !value
-                  ? 'A title name is required'
+                  ? "A title name is required"
                   : value.length < 3
-                    ? 'title name must be at least 3 characters'
+                    ? "title name must be at least 3 characters"
                     : undefined,
               onChangeAsyncDebounceMs: 500,
               onChangeAsync: async ({ value }) => {
-                await new Promise((resolve) => setTimeout(resolve, 1000))
+                await new Promise((resolve) => setTimeout(resolve, 1000));
                 return (
-                  value.includes('error') && 'No "error" allowed in first name'
-                )
+                  value.includes("error") && 'No "error" allowed in first name'
+                );
               },
             }}
             children={(field) => {
               // Avoid hasty abstractions. Render props are great!
               return (
                 <>
-                  <Label htmlFor={field.name}>First Name:</Label>
+                  <Label htmlFor={field.name}>Title:</Label>
                   <Input
                     id={field.name}
                     name={field.name}
@@ -83,7 +83,7 @@ function CreateExpense() {
                   />
                   <FieldInfo field={field} />
                 </>
-              )
+              );
             }}
           />
         </div>
@@ -94,10 +94,10 @@ function CreateExpense() {
             name="amount"
             validators={{
               onChange: ({ value }) =>
-                typeof value !== 'number'
-                  ? 'An amount is required'
-                  : value < 0
-                    ? 'amount must be at least a positive number'
+                typeof value !== "string"
+                  ? "An amount is required"
+                  : Number(value) < 0
+                    ? "amount must be at least a positive number"
                     : undefined,
               onChangeAsyncDebounceMs: 500,
             }}
@@ -111,11 +111,11 @@ function CreateExpense() {
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(Number(e.target.value))}
+                    onChange={(e) => field.handleChange(e.target.value)}
                   />
                   <FieldInfo field={field} />
                 </>
-              )
+              );
             }}
           />
         </div>
@@ -128,11 +128,11 @@ function CreateExpense() {
               type="submit"
               disabled={!canSubmit}
             >
-              {isSubmitting ? '...' : 'Submit'}
+              {isSubmitting ? "..." : "Submit"}
             </Button>
           )}
         />
       </form>
     </div>
-  )
+  );
 }
